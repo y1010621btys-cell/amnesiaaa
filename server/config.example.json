@@ -1,0 +1,28 @@
+{
+  "port": 8787,
+  "host": "127.0.0.1",
+  "password": "",
+
+  "him": {
+    "type": "claude-subscription",
+    "model": "claude-opus-4-6"
+  },
+
+  "narr": {
+    "type": "claude-subscription",
+    "model": "claude-sonnet-4-6"
+  },
+
+  "memory": {
+    "url": ""
+  },
+
+  "_说明": {
+    "type 可以是": "anthropic（官方 API 或 Anthropic 格式的中转）/ openai（OpenAI 兼容的中转）/ claude-subscription（这台机器上已经登录的 Claude 订阅）",
+    "anthropic / openai 还要填": "\"base\": \"中转地址（官方 API 不填）\", \"key\": \"sk-...\"",
+    "narr": "旁白用的连接；整个删掉就跟 him 用同一个。旁白每轮先写一小段，用便宜一点的模型就够",
+    "host": "127.0.0.1 = 只有这台机器能打开；要从手机打开就改成 0.0.0.0，并且一定设 password（打开网页时浏览器会问）",
+    "password": "空 = 不设密码",
+    "memory": "可选。填她记忆库的搜索地址，回响每一句就去库里捞（例：http://127.0.0.1:8000/search?q={q}）。不填 = 只从没放进这一夜的底片和设置里的「更多记忆」里捞。详见 docs/接记忆库.md"
+  }
+}

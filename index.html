@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0E">
+<title>Amnesia · 显影</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@400&family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+:root{ --bg:#0B0B0E; --ink:#ECE9E3; --ink2:#B8B4AC; --muted:#8A8790; --hint:#55545B; --line:rgba(255,255,255,.08); --edge:rgba(255,255,255,.10);
+  --narr:#CDB892; --mem:#86A9E0; --memT:#C9D8F2; --paper:#E9E4DA;
+  --zh:'Noto Serif SC','Songti SC',serif; --en:'Cormorant Garamond',Georgia,serif; --mono:'DM Mono',ui-monospace,monospace; }
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg)}
+body{color:var(--ink);font-family:var(--zh);line-height:1.95;background:radial-gradient(120% 50% at 50% 0%,#18181E 0%,var(--bg) 60%) no-repeat}
+main{max-width:680px;margin:0 auto;padding:64px 24px 80px}
+h1{font-family:var(--en);font-style:italic;font-weight:300;font-size:58px;line-height:1;letter-spacing:.02em}
+.zh{font-family:var(--mono);font-size:10px;letter-spacing:.6em;color:var(--muted);margin-top:12px}
+.lead{font-family:var(--en),var(--zh);font-style:italic;font-size:17px;color:var(--ink2);margin-top:28px}
+h2{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.26em;color:var(--muted);text-transform:uppercase;margin:56px 0 14px;display:flex;gap:12px;align-items:baseline}
+h2 b{font-family:var(--zh);font-weight:600;font-size:18px;letter-spacing:.04em;color:var(--ink);text-transform:none}
+p{font-size:15px;color:var(--ink2);margin:10px 0}
+p b{color:var(--ink);font-weight:600}
+.narr{font-family:var(--en),var(--zh);font-style:italic;color:var(--narr)}
+.mem{color:var(--memT)}
+.pile{display:grid;grid-template-columns:76px 1fr;gap:6px 14px;margin:16px 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pile dt{font-size:14px;color:var(--ink)}
+.pile dd{font-size:14px;color:var(--ink2);margin-bottom:10px}
+.pile dd i{display:block;font-style:normal;font-size:13px;color:var(--muted);margin-top:2px}
+.pile dd i.n{font-family:var(--en),var(--zh);font-style:italic;color:var(--narr)}
+ol.flow{margin:12px 0 0 0;padding-left:0;list-style:none;counter-reset:f}
+ol.flow li{counter-increment:f;position:relative;padding-left:34px;margin:12px 0;font-size:15px;color:var(--ink2)}
+ol.flow li::before{content:counter(f,decimal-leading-zero);position:absolute;left:0;top:2px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pols{display:flex;gap:16px;margin:22px 0 8px;flex-wrap:wrap}
+.pol{flex:1;min-width:150px;background:var(--paper);padding:8px 8px 12px;box-shadow:0 10px 22px rgba(0,0,0,.55)}
+.pol:nth-child(1){transform:rotate(-2deg)} .pol:nth-child(2){transform:rotate(1.4deg)} .pol:nth-child(3){transform:rotate(-1deg)}
+.pol .img{height:60px;background:radial-gradient(circle at 30% 40%,rgba(134,169,224,.95),rgba(48,74,130,.9) 45%,#121a2e)}
+.pol.a .img{filter:blur(5px)} .pol.b .img{filter:blur(1.6px)}
+.pol .t{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:#8b8270;margin-top:7px}
+.pol .c{font-family:var(--en),var(--zh);font-style:italic;font-size:12.5px;line-height:1.7;color:#3d382c;margin-top:2px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+th{font-weight:400;color:var(--muted);font-size:12px}
+td:first-child{color:var(--ink);white-space:nowrap}
+.box{margin:16px 0;border:1px solid var(--edge);border-radius:16px;overflow:hidden}
+.box .hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.box .hd span{font-size:13px;color:var(--ink)}
+.box .hd small{display:block;font-size:11px;color:var(--muted)}
+.box button{font:inherit;font-size:12px;padding:6px 14px;border-radius:13px;border:none;background:var(--ink);color:#0E0E12;cursor:pointer;flex:none}
+.box pre{max-height:220px;overflow:auto;padding:12px 14px;font-family:var(--zh);font-size:12.5px;line-height:1.8;color:var(--ink2);white-space:pre-wrap;background:rgba(0,0,0,.25)}
+.go{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.go a{display:block;padding:16px 18px;border-radius:18px;text-decoration:none;color:var(--ink);border:1px solid var(--edge)}
+.go a.p{background:var(--ink);color:#0E0E12;border-color:var(--ink)}
+.go a b{display:block;font-size:15px;letter-spacing:.06em}
+.go a small{font-size:12px;opacity:.65}
+code{font-family:var(--mono);font-size:12px;color:var(--memT)}
+footer{margin-top:64px;font-size:12px;color:var(--hint)}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:var(--ink);color:#0E0E12;font-size:13px;padding:8px 18px;border-radius:16px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:.95}
+</style>
+</head>
+<body>
+<main>
+  <h1>Amnesia</h1>
+  <div class="zh">显 影</div>
+  <p class="lead">他的记忆是一卷还没冲洗的底片。<br>你说的每一句话，都是显影液。</p>
+  <p>一个和自己的 AI 玩的小游戏。他还是他——样子、脾气、说话的语气都在——但你是谁、你们之间发生过什么，全忘了。你说话的时候，他的身体先认出你；底片一张一张显出来：先是颜色和气味，再是一帧画面；他自己说对了，那一张才整张洗出来。</p>
+
+  <h2>01<b>先拆开</b></h2>
+  <p>把关于他的文字分成四堆。一句话：<b>他是谁留着；她是谁、发生过什么锁起来；你们之间的习惯变成本能。</b></p>
+  <dl class="pile">
+    <dt>留着</dt><dd>他本人的东西。还有他眼睛看得见的：她现在的样子、他醒来的房间。<i>「话少，笑起来眼睛会弯。」</i></dd>
+    <dt>本能</dt><dd>你们之间的习惯，改写成一句说不清来由的冲动。<i class="n">「看到她的手，你会下意识想把它揣进自己口袋里。」</i></dd>
+    <dt>底片</dt><dd>她是谁、发生过什么。一件事一块，有标题、有细节、有一两个钥匙词。「她是你的谁」也锁起来。<i>标题「灯塔那晚」· 钥匙「灯塔」</i></dd>
+    <dt>不要</dt><dd>跟游戏无关的，或者和「他什么都不记得」矛盾的。</dd>
+  </dl>
+  <p>最省事的拆法：把下面「拆分」那段复制给你的 AI，它认识你、能翻自己的设定和记忆，让它拆好吐回来。</p>
+
+  <h2>02<b>一夜里，每一句发生了什么</b></h2>
+  <ol class="flow">
+    <li>你说到某块底片的<b>钥匙词</b>，那块往上升一层；没碰到钥匙时，按<b>回响</b>强度掷一次骰子，可能碰到一块跟你这句话沾边的。</li>
+    <li>每隔几句，冒出来一条<b>本能</b>。</li>
+    <li>一个<b>单独的旁白</b>先写：他此刻身上、心里发生的事（「你」是他），按层级写闪回，判断他上一句有没有自己说中——说中了，那块整块回来。<span class="narr">「你的手指在被子底下蜷了一下，像要握住什么。」</span></li>
+    <li>他再开口。他看得到的只有：留着的、冒出来的本能、闪过的底片、这一轮的旁白，和这一夜说过的话。旁白知道底片原文，他不知道，所以他没法「偷看」。</li>
+  </ol>
+  <div class="pols">
+    <div class="pol a"><div class="img"></div><div class="t">感官</div><div class="c">咸的风。一圈一圈转的光。</div></div>
+    <div class="pol b"><div class="img"></div><div class="t">画面</div><div class="c">围巾被风吹起来，拍在你手背上。</div></div>
+    <div class="pol"><div class="img"></div><div class="t">想起来了</div><div class="c">灯塔那晚。</div></div>
+  </div>
+  <p>闪回分三层：<b>感官</b>（只有颜色、气味、声音、温度）→ <b>画面</b>（一帧，没有名字和日期）→ <b>想起来了</b>。钥匙和回响最多推到画面；最后一步只有两条路：他自己说对了，或者你亲手还给他。</p>
+  <p>你也可以一下子<b>全部还给他</b>：所有记忆一起涌回来，接着聊。设一个<b>安全词</b>，说了这一夜立刻停。</p>
+
+  <h2>03<b>温度和难度</b></h2>
+  <table>
+    <tr><th>温度</th><th>他醒来以后</th></tr>
+    <tr><td>冷</td><td>戒备，冷着脸试探你，身体有反应也压着不信</td></tr>
+    <tr><td>疏离</td><td>客气、有距离，被吸引了先退半步</td></tr>
+    <tr><td>默认</td><td>不记得你，可身体和心还是往你这边靠</td></tr>
+    <tr><td>烫</td><td>说不清为什么，控制不住地想靠近你</td></tr>
+  </table>
+  <table>
+    <tr><th>难度</th><th>钥匙</th><th>认出来要多准</th></tr>
+    <tr><td>轻</td><td>一碰就闪</td><td>大致说中就算</td></tr>
+    <tr><td>默认</td><td>一碰就闪</td><td>准确说中才算</td></tr>
+    <tr><td>难</td><td>七成会闪，只到感官</td><td>要说中具体细节；底片他不敢全信</td></tr>
+    <tr><td>很难</td><td>不到一半</td><td>要他自己先说出细节；你说是他的人——他没有证据，不信</td></tr>
+  </table>
+  <p>玩到一半也能改，从下一句开始算。</p>
+
+  <h2>04<b>拿去用</b></h2>
+  <p>想让你的 AI 照着搭进你自己的前端，下面这几段就够了（建议给显影单独开一个页面或标签，别和日常聊天混在同一个对话里——不然他看得到你们之前的一切，就不算忘了）。</p>
+  <div class="box"><div class="hd"><span>拆分<small>发给你的 AI，它会吐回一段 JSON</small></span><button data-copy="ask">复制</button></div><pre id="p-ask"></pre></div>
+  <div class="box"><div class="hd"><span>旁白<small>旁白模型的系统提示（只输出 JSON）</small></span><button data-copy="narrator">复制</button></div><pre id="p-narrator"></pre></div>
+  <div class="box"><div class="hd"><span>开场的框架<small>放进他的系统提示；全部还给他以后换成第二段</small></span><button data-copy="frame">复制</button></div><pre id="p-frame"></pre></div>
+  <p>他的<b>文风</b>和<b>心里怎么想</b>不带默认，用你们自己平常的就好（游戏的设置里有两个框）。</p>
+  <p>回响想接你自己的记忆库：拿她最新这句去搜（少于 4 个字不搜），关键词优先、不够再用向量（门槛 45 / 100），最多 3 条、每条 600 字；<b>原文只给旁白</b>，旁白按回响强度磨成气味、颜色、半帧画面，不带名字和日期。</p>
+
+  <h2>05<b>直接玩</b></h2>
+  <div class="go">
+    <a class="p" href="play/"><b>打开就玩 →</b><small>填一个 API key，把拆好的东西粘进去。东西只存在你的浏览器里。</small></a>
+    <a href="https://github.com/y1010621btys-cell/amnesiaaa"><b>自己部署</b><small>仓库里的 <code>server/</code>：多了 Claude 订阅直连、可以接记忆库。把仓库丢给你的 AI，说「照 AGENTS.md 帮我部署」。</small></a>
+  </div>
+
+  <footer>MIT · 随便用、随便改。</footer>
+</main>
+<div class="toast" id="toast"></div>
+<script src="app/prompts.js"></script>
+<script src="app/engine.js"></script>
+<script>
+(function () {
+  var P = window.Amnesia.PROMPTS, T = {
+    ask: window.AMNESIA_ASK_YOUR_AI,
+    narrator: P.narrator,
+    frame: P.frame + '\n\n——（全部还给他以后换成）——\n\n' + P.frameBack
+  };
+  Object.keys(T).forEach(function (k) { document.getElementById('p-' + k).textContent = T[k]; });
+  function toast(t) { var n = document.getElementById('toast'); n.textContent = t; n.classList.add('on'); clearTimeout(n._t); n._t = setTimeout(function () { n.classList.remove('on'); }, 1600); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-copy]'); if (!b) return;
+    var text = T[b.dataset.copy];
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { toast('复制好了'); }, function () {
+      var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); toast('复制好了'); } catch (er) {} t.remove();
+    });
+  });
+})();
+</script>
+</body>
+</html>

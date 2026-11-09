@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0E">
+<title>Amnesia · 显影</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@400&family=Noto+Serif+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../app/style.css">
+</head>
+<body>
+
+<!-- 首页 -->
+<div class="view" id="vHome">
+  <div class="scroll"><div class="home">
+    <div class="ttl">Amnesia</div>
+    <div class="ttl-zh">显 影</div>
+    <div class="intro">他的记忆是一卷还没冲洗的底片。<br>你说的每一句话，都是显影液。</div>
+    <div class="todo" id="todo" style="display:none"></div>
+    <button class="big" id="goNew">新 的 一 夜<small>先选他的温度、难度，埋几把钥匙</small></button>
+    <button class="ghost" id="goSplit">拆分台 · 他记得什么、忘了什么</button>
+    <button class="ghost" id="goSet">设置 · 连模型</button>
+    <div class="sec">之前的夜<button id="runsEdit">整理</button></div>
+    <div id="runs"><div class="empty">还没有。</div></div>
+  </div></div>
+</div>
+
+<!-- 设置 -->
+<div class="view" id="vSet">
+  <div class="top"><button class="bk" data-go="home">‹</button><div class="who"><b>设置</b><span>东西只存在这个浏览器里</span></div></div>
+  <div class="scroll"><div class="pad">
+    <div class="sec">他用的模型</div>
+    <div class="field"><label>怎么连</label><select id="hType">
+      <option value="anthropic">Anthropic 格式（官方 API，或兼容的中转）</option>
+      <option value="openai">OpenAI 兼容格式（各种中转）</option>
+      <option value="server">自部署版的服务器（订阅直连在这里）</option></select></div>
+    <div class="field" id="hBaseF"><label id="hBaseL">地址（官方 API 留空）</label><input id="hBase" placeholder="https://..."></div>
+    <div class="field" id="hKeyF"><label>Key</label><input id="hKey" type="password" placeholder="sk-..." autocomplete="off"></div>
+    <div class="field" id="hModelF"><label>模型</label><input id="hModel" placeholder="claude-opus-4-6"></div>
+    <div class="sec">旁白用的模型<i>旁白每一轮先写一小段，便宜一点的就行</i></div>
+    <div class="sw">跟他用同一个连接<span class="tg" id="nSame"></span></div>
+    <div id="nOwn">
+      <div class="field" style="margin-top:12px"><label>怎么连</label><select id="nType">
+        <option value="anthropic">Anthropic 格式</option><option value="openai">OpenAI 兼容格式</option><option value="server">自部署版的服务器</option></select></div>
+      <div class="field"><label>地址</label><input id="nBase" placeholder="https://..."></div>
+      <div class="field"><label>Key</label><input id="nKey" type="password" autocomplete="off"></div>
+    </div>
+    <div class="field" style="margin-top:12px"><label>旁白的模型</label><input id="nModel" placeholder="claude-sonnet-4-6"></div>
+    <div class="row"><button class="btn" id="testConn">试一下连不连得上</button><span class="sp"></span></div>
+
+    <div class="sec">玩法</div>
+    <div class="field"><label>安全词（她说了，这一夜立刻停；不能当钥匙）</label><input id="sSafe" placeholder="不填就没有"></div>
+    <div class="sw">他先在心里想，再开口（思考）<span class="tg" id="sCot"></span></div>
+    <div class="field" style="margin-top:12px"><label>他心里怎么想（可以不填，开了思考才用得上）</label><textarea id="sCotStyle" placeholder="比如：连贯的内心独白，不分点，不替她分析……"></textarea></div>
+    <div class="field" style="margin-top:12px"><label>他的写作风格（可以不填，填了每一轮都带着）</label><textarea id="sStyle" placeholder="比如：长句、细腻、多写动作和感官……"></textarea></div>
+    <div class="field"><label>更多记忆（可以不填）——回响会从这里捞和她的话沾边的，几段之间空一行</label><textarea id="sMem" placeholder="不在底片里、但想让它偶尔漏出来的事……"></textarea></div>
+
+    <div class="sec">存档</div>
+    <div class="row"><button class="btn" id="exp">导出存档</button><button class="btn" id="imp">导入存档</button><span class="sp"></span></div>
+    <div class="note">导出的文件里不带 key。换手机、换浏览器的时候用。</div>
+    <input type="file" id="impFile" accept="application/json,.json" style="display:none">
+    <button class="big" id="saveSet">存</button>
+  </div></div>
+</div>
+
+<!-- 开局 -->
+<div class="view" id="vSetup">
+  <div class="top"><button class="bk" data-go="home">‹</button><div class="who"><b>新的一夜</b><span>他醒过来之前</span></div></div>
+  <div class="scroll"><div class="pad">
+    <div class="sec">他的温度<i>醒来以后对你多近</i></div>
+    <div class="tier" id="sWarm"></div><div class="tierdesc" id="dWarm"></div>
+    <div class="sec">难度<i>记忆多模糊、多难认出来、敢不敢信你</i></div>
+    <div class="tier" id="sDiff"></div><div class="tierdesc" id="dDiff"></div>
+    <div class="sec">回响<i>你说话时，记忆漏出来多少</i></div>
+    <input type="range" class="slider" id="sEcho" min="0" max="100" value="45">
+    <div class="lv"><span>颜色 · 气味</span><b id="vEcho">一帧画面</b><span>差一点想起</span></div>
+    <div class="sec">身体还记得<i>点亮的才会冒出来</i></div>
+    <div class="ins" id="sIns"></div>
+    <div class="step"><span>一醒来就有几条</span><span class="ctl"><button data-st="start" data-d="-1">−</button><b id="vStart">2</b><button data-st="start" data-d="1">＋</button></span></div>
+    <div class="step"><span>之后每几句冒出来一条</span><span class="ctl"><button data-st="every" data-d="-1">−</button><b id="vEvery">3</b><button data-st="every" data-d="1">＋</button></span></div>
+    <div class="sec">底片<i>点亮 = 放进这一夜；右边写钥匙</i></div>
+    <div id="sFr"></div>
+    <div class="step"><span>没点亮的再随机放几块，凑够</span><span class="ctl"><button data-st="count" data-d="-1">−</button><b id="vCount">7</b><button data-st="count" data-d="1">＋</button></span></div>
+    <div class="note">钥匙：你说到这个词，那块底片就一定会闪一下（先是感官，再是画面）。想起来要靠他自己说对，或者你在底片墙上点「还给他」。</div>
+    <button class="big" id="goStart">醒 来</button>
+  </div></div>
+</div>
+
+<!-- 一夜 -->
+<div class="view" id="vPlay">
+  <div class="top">
+    <button class="bk" data-go="home">‹</button>
+    <div class="who"><b>他</b><span id="pSub">不记得你</span></div>
+    <div class="seg" id="pScene"><button data-sc="offline">长句</button><button data-sc="online">短句</button></div>
+    <button class="strip" id="pBoard"></button>
+  </div>
+  <div class="stream" id="stream"></div>
+  <div class="dock" id="dock"><textarea id="ta" rows="1" placeholder="说点什么，看他能不能认出来"></textarea>
+    <button class="send" id="send" aria-label="发送"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+  <div class="ended" id="ended" style="display:none">安全词 · 这一夜停了</div>
+</div>
+
+<!-- 拆分台 -->
+<div class="view" id="vSplit">
+  <div class="top"><button class="bk" data-go="home">‹</button><div class="who"><b>拆分台</b><span id="spSub">他记得什么、忘了什么</span></div></div>
+  <div class="tabs" id="spTabs"></div>
+  <div class="scroll"><div class="pad" id="spList" style="padding-bottom:110px"></div></div>
+  <div class="savebar"><span id="spMsg">改完记得存</span><button id="spSave" disabled>存</button></div>
+</div>
+
+<div class="ov" id="tOv"><div class="amsh"><div class="grab"></div><div class="sh-t">Thought process</div><div class="sh-s" id="tSub"></div><div class="sh-b" id="tBody"></div></div></div>
+<div class="ov" id="bOv"><div class="amsh"><div class="grab"></div><div class="sh-t">底片</div><div class="sh-s" id="bSub"></div><div class="sh-b" id="bBody"></div></div></div>
+<div class="ov" id="pOv" style="z-index:60"><div class="amsh"><div class="grab"></div><div class="sh-t" id="pkT"></div><div class="sh-s">只有你看得见 · 他还不知道</div><div class="sh-b"><div id="pkB"></div></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="../app/prompts.js"></script>
+<script src="../app/engine.js"></script>
+<script src="../app/ui.js"></script>
+</body>
+</html>
